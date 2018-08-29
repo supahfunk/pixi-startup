@@ -17,24 +17,38 @@ let app = new PIXI.Application({
 });
 
 document.body.appendChild(app.view);
-
-
 const render = app.renderer;
+let winW = window.innerWidth;
+let winH = window.innerHeight;
+
 render.autoResize = true;
-render.resize(window.innerWidth, window.innerHeight);
+render.resize(winW, winH);
 
 const stage = app.stage;
 
 /* Image Loader */
-const setup = () => {
-    let cat = new PIXI.Sprite(
-        PIXI.loader.resources['img/cat.png'].texture
-    )
-
-    stage.addChild(cat);
-}
-
 PIXI.loader
     .add('img/cat.png')
-    .load(setup);
+    .load(init);
 
+/* Init */
+function init() {
+    cat = new PIXI.Sprite(
+        PIXI.loader.resources['img/cat.png'].texture
+    )
+    stage.addChild(cat);
+    cat.pivot.x = cat.width / 2;
+    cat.pivot.y = cat.height / 2;
+    resize();
+}
+
+/* Resize */
+function resize() {
+    winW = window.innerWidth;
+    winH = window.innerHeight;
+    render.resize(winW, winH);
+
+    cat.x = winW / 2;
+    cat.y = winH / 2;
+}
+window.addEventListener("resize", resize);
